@@ -1,8 +1,4 @@
 defmodule BrodexTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: true
   doctest Brodex
-
-  test "greets the world" do
-    assert Brodex.hello() == :world
-  end
 end
