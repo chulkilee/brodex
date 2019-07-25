@@ -18,13 +18,12 @@ defmodule Brodex.MixProject do
   end
 
   def application do
-    [
-      extra_applications: [:logger]
-    ]
+    []
   end
 
   defp deps do
     [
+      {:brod, "~> 3.8"},
       {:ex_doc, "~> 0.21.0", only: :dev, runtime: false}
     ]
   end
