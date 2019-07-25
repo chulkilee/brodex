@@ -19,3 +19,6 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/brodex](https://hexdocs.pm/brodex).
 
+## License
+
+The source code is under the Apache License 2.0.

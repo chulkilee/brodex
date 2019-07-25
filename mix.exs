@@ -8,6 +8,10 @@ defmodule Brodex.MixProject do
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+      # hex
+      package: [
+        licenses: ["Apache-2.0"]
+      ],
       # docs
       source_url: "https://github.com/chulkilee/brodex"
     ]
