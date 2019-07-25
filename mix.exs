@@ -9,8 +9,10 @@ defmodule Brodex.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       # hex
+      description: "A thin wrapper of brod.",
       package: [
-        licenses: ["Apache-2.0"]
+        licenses: ["Apache-2.0"],
+        links: %{"GitHub" => "https://github.com/chulkilee/brodex"}
       ],
       # docs
       source_url: "https://github.com/chulkilee/brodex"
