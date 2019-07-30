@@ -71,4 +71,33 @@ defmodule Brodex.MessageSet do
   defp cast_message(message) when is_tuple(message), do: Brodex.Message.from_record(message)
 
   defp cast_message(message), do: message
+
+  @doc """
+  Converts a `Brodex.MessageSet` into `t:record/0`.
+
+  ### Examples
+
+      iex> Brodex.MessageSet.to_record(%Brodex.MessageSet{
+      ...>   topic: "hello",
+      ...>   partition: 0,
+      ...>   high_wm_offset: 1,
+      ...>   messages: [
+      ...>     %Brodex.Message{
+      ...>       offset: 1,
+      ...>       key: "",
+      ...>       value: "world",
+      ...>       ts_type: :undefined,
+      ...>       ts: :undefined,
+      ...>       headers: []
+      ...>     }
+      ...>   ]
+      ...> })
+      {:kafka_message_set, "hello", 0, 1,
+       [{:kafka_message, 1, "", "world", :undefined, :undefined, []}]}
+
+  """
+  def to_record(%__MODULE__{} = struct) do
+    {:kafka_message_set, struct.topic, struct.partition, struct.high_wm_offset,
+     Enum.map(struct.messages, &Brodex.Message.to_record/1)}
+  end
 end

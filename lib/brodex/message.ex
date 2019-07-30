@@ -58,4 +58,25 @@ defmodule Brodex.Message do
 
   def from_record({:kafka_message, offset, k, v, ts_type, ts, headers}),
     do: %__MODULE__{offset: offset, key: k, value: v, ts_type: ts_type, ts: ts, headers: headers}
+
+  @doc """
+  Converts a `Brodex.Message` into a `t:record/0`.
+
+  ## Examples
+
+      iex> Brodex.Message.to_record(%Brodex.Message{
+      ...>   headers: [],
+      ...>   key: "",
+      ...>   offset: 164,
+      ...>   ts: 1_563_946_803_056,
+      ...>   ts_type: :create,
+      ...>   value: "hello"
+      ...> })
+      {:kafka_message, 164, "", "hello", :create, 1_563_946_803_056, []}
+
+  """
+  def to_record(%__MODULE__{} = struct),
+    do:
+      {:kafka_message, struct.offset, struct.key, struct.value, struct.ts_type, struct.ts,
+       struct.headers}
 end
