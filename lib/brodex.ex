@@ -68,7 +68,10 @@ defmodule Brodex do
           {:brod_call_ref, caller :: :undefined | pid, callee :: :undefined | pid,
            ref :: :undefined | reference}
 
-  @typedoc "[`:brod.consumer_config`](https://hexdocs.pm/brod/brod.html#type-consumer_config)"
+  @typedoc "[`:brod_producer.config`](https://hexdocs.pm/brod/brod_producer.html#type-config)"
+  @type producer_config :: :proplists.proplist()
+
+  @typedoc "[`:brod_consumer.config`](https://hexdocs.pm/brod/brod_consumer.html#type-config)"
   @type consumer_config :: :proplists.proplist()
 
   @typedoc "[`:brod.value`](https://hexdocs.pm/brod/brod.html#type-value)"
@@ -119,6 +122,20 @@ defmodule Brodex do
   @spec stop_client(client) :: :ok
   def stop_client(client),
     do: :brod.stop_client(client)
+
+  @doc """
+  Wrapper of [`:brod.start_consumer/3`](https://hexdocs.pm/brod/brod.html#start_consumer-3).
+  """
+  @spec start_consumer(client, topic, consumer_config) :: :ok
+  def start_consumer(client, topic, consumer_config \\ []),
+    do: :brod.start_consumer(client, topic, consumer_config)
+
+  @doc """
+  Wrapper of [`:brod.start_producer/3`](https://hexdocs.pm/brod/brod.html#start_producer-3).
+  """
+  @spec start_producer(client, topic, producer_config) :: :ok
+  def start_producer(client, topic, producer_config \\ []),
+    do: :brod.start_producer(client, topic, producer_config)
 
   @doc """
   Wrapper of [`:brod.produce/5`](https://hexdocs.pm/brod/brod.html#produce-5).
