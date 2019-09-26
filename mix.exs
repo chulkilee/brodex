@@ -4,7 +4,7 @@ defmodule Brodex.MixProject do
   def project do
     [
       app: :brodex,
-      version: "0.0.2-dev",
+      version: "0.0.2",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),

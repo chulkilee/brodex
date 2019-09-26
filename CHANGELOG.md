@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.2] - 2019-07-26
+
+### Added
+
+- Add `Brodex.start_producer/3`, `Brodex.start_consumer/3`
+- Add `Brodex.Message.to_record/1`
+
 ## [0.0.1] - 2019-07-26
 
 ### Added
@@ -14,4 +21,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add the initial implementation: `Brodex`, `Brodex.Guards`, `Brodex.TopicSubscriber`, `Brodex.GroupSubscriber`
 
 [Unreleased]: https://github.com/chulkilee/brodex/compare/v0.0.1...HEAD
+[0.0.2]: https://github.com/chulkilee/brodex/releases/tag/v0.0.2
 [0.0.1]: https://github.com/chulkilee/brodex/releases/tag/v0.0.1
