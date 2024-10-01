@@ -4,26 +4,26 @@ defmodule Brodex do
 
   ## Configuration
 
-  See [brod README](https://github.com/klarna/brod) for details.
+  See [brod README](https://github.com/kafka4beam/brod) for details.
 
   ```elixir
   config :brod,
     clients: [
       my_client: [
         endpoints: [{'127.0.0.1', 9092}],
+        auto_start_producers: true,
         reconnect_cool_down_seconds: 10
       ]
     ]
   ```
 
-  If you use [mix release](https://hexdocs.pm/mix/Mix.Tasks.Release.html)
-
   ```elixir
-  # config/releases.exs
+  # config/runtime.exs
   config :brod,
     clients: [
       my_client: [
-        endpoints: Brodex.parse_endpoints(System.fetch_env!("KAFKA_ENDPOINTS)),
+        endpoints: Brodex.parse_endpoints(System.fetch_env!("KAFKA_ENDPOINTS")),
+        auto_start_producers: true,
         reconnect_cool_down_seconds: 10
       ]
     ]

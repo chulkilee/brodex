@@ -14,7 +14,7 @@ defmodule Brodex.MixProject do
         licenses: ["Apache-2.0"],
         links: %{
           "GitHub" => "https://github.com/chulkilee/brodex",
-          "Changelog" => "https://github.com/chulkilee/brodex/blob/master/CHANGELOG.md"
+          "Changelog" => "https://github.com/chulkilee/brodex/blob/main/CHANGELOG.md"
         }
       ],
       # docs
