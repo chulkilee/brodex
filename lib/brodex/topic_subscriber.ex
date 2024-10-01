@@ -1,6 +1,6 @@
 defmodule Brodex.TopicSubscriber do
   @moduledoc """
-  Wrapper of [`:brod_topic_subscriber`](https://hexdocs.pm/brod/brod_topic_subscriber.html).
+  Wrapper of `m::brod_topic_subscriber`.
   """
 
   @callback init(topic :: Brodex.topic(), term) ::
@@ -19,11 +19,11 @@ defmodule Brodex.TopicSubscriber do
   """
   @type callback_spec :: module | {module, any}
 
-  @typedoc "[`:brod_topic_subscriber.cb_state`](https://hexdocs.pm/brod/brod_topic_subscriber.html#type-cb_state)"
+  @typedoc "`t::brod_topic_subscriber.cb_state/0`"
   @type callback_state :: term
 
-  @typedoc "[`:brod_topic_subscriber.committed_offsets`](https://hexdocs.pm/brod/brod_topic_subscriber.html#type-committed_offsets)"
-  @type committed_offsets :: [{Brodex.parition(), Brodex.offset()}]
+  @typedoc "`t::brod_topic_subscriber.committed_offsets/0`"
+  @type committed_offsets :: [{Brodex.partition(), Brodex.offset()}]
 
   @type start_link_option ::
           {:client, Brodex.client()}
@@ -32,7 +32,7 @@ defmodule Brodex.TopicSubscriber do
           | {:message_type, :message | :message_set}
 
   @doc """
-  Wrapper of [`:brod_topic_subscriber.start_link/7`](https://hexdocs.pm/brod/brod_topic_subscriber.html#start_link-7).
+  Wrapper of `:brod_topic_subscriber.start_link/7`.
   """
   @spec start_link(Brodex.client(), Brodex.topic(), callback_spec, [start_link_option]) ::
           {:ok, pid} | {:error, term}
@@ -66,7 +66,7 @@ defmodule Brodex.TopicSubscriber do
   end
 
   @doc """
-  Wrapper of [`:brod_topic_subscriber.stop/1`](https://hexdocs.pm/brod/brod_topic_subscriber.html#stop-1).
+  Wrapper of `:brod_topic_subscriber.stop/1`.
   """
   @spec stop(pid) :: :ok
   def stop(pid), do: :brod_topic_subscriber.stop(pid)

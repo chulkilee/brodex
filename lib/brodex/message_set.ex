@@ -2,7 +2,7 @@ defmodule Brodex.MessageSet do
   @moduledoc """
   Represents a Kafka message set.
 
-  Wrapper of [`:brod.message_set`](https://hexdocs.pm/brod/brod.html#type-message_set).
+  Wrapper of `t::brod.message_set/0`.
   """
 
   @type t :: %__MODULE__{
@@ -12,11 +12,11 @@ defmodule Brodex.MessageSet do
           messages: [Brodex.Message.t()] | {:incomplete_batch, Brodex.int32()}
         }
 
-  @typedoc "[`:brod.message_set`](https://hexdocs.pm/brod/brod.html#type-message_set)"
+  @typedoc "`t::brod.message_set/0`"
   @type record ::
           {:kafka_message_set, topic :: Brodex.topic(), partition :: Brodex.partition(),
            high_wm_offset :: integer,
-           messages :: [Brodex.record()] | {:incomplete_batch, Brodex.int32()}}
+           messages :: [Brodex.Message.record()] | {:incomplete_batch, Brodex.int32()}}
 
   defstruct [:topic, :partition, :high_wm_offset, :messages]
 
@@ -96,6 +96,7 @@ defmodule Brodex.MessageSet do
        [{:kafka_message, 1, "", "world", :undefined, :undefined, []}]}
 
   """
+  @spec to_record(t) :: record
   def to_record(%__MODULE__{} = struct) do
     {:kafka_message_set, struct.topic, struct.partition, struct.high_wm_offset,
      Enum.map(struct.messages, &Brodex.Message.to_record/1)}

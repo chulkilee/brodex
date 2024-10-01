@@ -1,80 +1,80 @@
 defmodule Brodex do
   @moduledoc """
-  Brodex is a thin wrapper of [`:brod`](https://hex.pm/packages/brod).
+  Brodex is a thin wrapper of `m::brod`.
 
   ## Configuration
 
-  See [brod README](https://github.com/klarna/brod) for details.
+  See [brod README](https://github.com/kafka4beam/brod) for details.
 
   ```elixir
   config :brod,
     clients: [
       my_client: [
         endpoints: [{'127.0.0.1', 9092}],
+        auto_start_producers: true,
         reconnect_cool_down_seconds: 10
       ]
     ]
   ```
 
-  If you use [mix release](https://hexdocs.pm/mix/Mix.Tasks.Release.html)
-
   ```elixir
-  # config/releases.exs
+  # config/runtime.exs
   config :brod,
     clients: [
       my_client: [
-        endpoints: Brodex.parse_endpoints(System.fetch_env!("KAFKA_ENDPOINTS)),
+        endpoints: Brodex.parse_endpoints(System.fetch_env!("KAFKA_ENDPOINTS")),
+        auto_start_producers: true,
         reconnect_cool_down_seconds: 10
       ]
     ]
   ```
   """
 
-  @typedoc "[`:brod.endpoint`](https://hexdocs.pm/brod/brod.html#type-endpoint)"
+  @typedoc "`t::brod.endpoint/0`"
   @type endpoint :: {binary() | :inet.hostname(), non_neg_integer}
 
-  @typedoc "[`:brod.client_id`](https://hexdocs.pm/brod/brod.html#type-client_id)"
+  @typedoc "`t::brod.client_id/0`"
   @type client_id :: atom
 
-  @typedoc "[`:brod.client`](https://hexdocs.pm/brod/brod.html#type-client)"
+  @typedoc "`t::brod.client/0`"
   @type client :: client_id | pid
 
-  @typedoc "[`:brod.client_config`](https://hexdocs.pm/brod/brod.html#type-client_config)"
+  @typedoc "`t::brod.client_config/0`"
   @type client_config :: :proplists.proplist()
 
-  @typedoc "[`:brod.connection`](https://hexdocs.pm/brod/brod.html#type-connection)"
+  @typedoc "`t::brod.connection/0`"
   @type connection :: pid
 
-  @typedoc "[`:brod.bootstrap`](https://hexdocs.pm/brod/brod.html#type-bootstrap)"
+  @typedoc "`t:brod.bootstrap/0`"
   @type bootstrap :: [endpoint] | {[endpoint], client_config}
 
-  @typedoc "[`:brod.topic`](https://hexdocs.pm/brod/brod.html#type-topic)"
+  @typedoc "`t:brod.topic/0`"
   @type topic :: binary
 
-  @typedoc "[`:brod.partition`](https://hexdocs.pm/brod/brod.html#type-partition)"
+  @typedoc "`t:brod.partition/0`"
   @type partition :: int32
 
-  @typedoc "[`:brod.key`](https://hexdocs.pm/brod/brod.html#type-key)"
+  @typedoc "`t:brod.key/0`"
   @type key :: :undefined | binary
 
-  @typedoc "[`:brod.offset`](https://hexdocs.pm/brod/brod.html#type-offset)"
+  @typedoc "`t:brod.offset/0`"
   @type offset :: int64
 
-  @typedoc "[`:brod.msg_ts`](https://hexdocs.pm/brod/brod.html#type-msg_ts)"
+  @typedoc "`t:brod.msg_ts/0`"
   @type msg_ts :: int64
 
-  @typedoc "[`:brod.call_ref`](https://hexdocs.pm/brod/brod.html#type-call_ref)"
+  @typedoc "`t:brod.call_ref/0`"
   @type call_ref ::
           {:brod_call_ref, caller :: :undefined | pid, callee :: :undefined | pid,
            ref :: :undefined | reference}
 
-  @typedoc "[`:brod_producer.config`](https://hexdocs.pm/brod/brod_producer.html#type-config)"
+  @typedoc "`t::brod_producer.config/0`"
   @type producer_config :: :proplists.proplist()
 
-  @typedoc "[`:brod_consumer.config`](https://hexdocs.pm/brod/brod_consumer.html#type-config)"
+  @typedoc "`t::brod_consumer.config/0`"
   @type consumer_config :: :proplists.proplist()
 
-  @typedoc "[`:brod.value`](https://hexdocs.pm/brod/brod.html#type-value)"
+  @typedoc "`t::brod.value/0`"
   @type value ::
           :undefined
           | iodata
@@ -84,32 +84,32 @@ defmodule Brodex do
           | msg_input
           | batch_input
 
-  @typedoc "[`:kpro.headers`](https://hexdocs.pm/kafka_protocol/kpro.html#type-headers)"
+  @typedoc "`t::kpro.headers/0`"
   @type headers :: [{binary, binary}]
 
-  @typedoc "[`:kpro.msg_input`](https://hexdocs.pm/kafka_protocol/kpro.html#type-msg_input)"
+  @typedoc "`t::kpro.msg_input/0`"
   @type msg_input :: %{headers: headers, ts: msg_ts, key: key, value: value}
 
-  @typedoc "[`:kpro.batch_input`](https://hexdocs.pm/kafka_protocol/kpro.html#type-batch_input)"
+  @typedoc "`t::kpro.batch_input/0`"
   @type batch_input :: [msg_input]
 
-  @typedoc "[`:brod.partitioner`](https://hexdocs.pm/brod/brod.html#type-partitioner)"
+  @typedoc "`t::brod.partitioner/0`"
   @type partitioner :: (topic, pos_integer, key, value -> {:ok, partition}) | :random | :hash
 
-  @typedoc "[`:brod.group_id`](https://hexdocs.pm/brod/brod.html#type-group_id)"
+  @typedoc "`t::brod.group_id/0`"
   @type group_id :: binary
 
-  @typedoc "[`:brod.group_config`](https://hexdocs.pm/brod/brod.html#type-group_config)"
+  @typedoc "`t::brod.group_config/0`"
   @type group_config :: :proplists.proplist()
 
-  @typedoc "[`:kpro.int32`](https://hexdocs.pm/kafka_protocol/kpro.html#type-int32)"
+  @typedoc "`t::kpro.int32/0`"
   @type int32 :: -2_147_483_648..2_147_483_647
 
-  @typedoc "[`:kpro.int64`](https://hexdocs.pm/kafka_protocol/kpro.html#type-int64)"
+  @typedoc "`t::kpro.int64/0`"
   @type int64 :: -9_223_372_036_854_775_808..9_223_372_036_854_775_807
 
   @doc """
-  Wrapper of [`:brod.start_client/3`](https://hexdocs.pm/brod/brod.html#start_client-3).
+  Wrapper of `:brod.start_client/3`.
   """
   @spec start_client([endpoint], client_id, :brod.client_config()) ::
           :ok | {:error, term}
@@ -117,28 +117,28 @@ defmodule Brodex do
     do: :brod.start_client(endpoints, client_id, options)
 
   @doc """
-  Wrapper of [`:brod.stop_client/1`](https://hexdocs.pm/brod/brod.html#stop_client-1).
+  Wrapper of `:brod.stop_client/1`.
   """
   @spec stop_client(client) :: :ok
   def stop_client(client),
     do: :brod.stop_client(client)
 
   @doc """
-  Wrapper of [`:brod.start_consumer/3`](https://hexdocs.pm/brod/brod.html#start_consumer-3).
+  Wrapper of `:brod.start_consumer/3`.
   """
   @spec start_consumer(client, topic, consumer_config) :: :ok
   def start_consumer(client, topic, consumer_config \\ []),
     do: :brod.start_consumer(client, topic, consumer_config)
 
   @doc """
-  Wrapper of [`:brod.start_producer/3`](https://hexdocs.pm/brod/brod.html#start_producer-3).
+  Wrapper of `:brod.start_producer/3`.
   """
   @spec start_producer(client, topic, producer_config) :: :ok
   def start_producer(client, topic, producer_config \\ []),
     do: :brod.start_producer(client, topic, producer_config)
 
   @doc """
-  Wrapper of [`:brod.produce/5`](https://hexdocs.pm/brod/brod.html#produce-5).
+  Wrapper of `:brod.produce/5`.
   """
   @spec produce_async(client, topic, input :: {key, value} | value, partition | partitioner) ::
           {:ok, call_ref} | {:error, term}
@@ -151,7 +151,7 @@ defmodule Brodex do
     do: :brod.produce(client, topic, partition_spec, key, value)
 
   @doc """
-  Wrapper of [`:brod.produce_sync/5`](https://hexdocs.pm/brod/brod.html#produce_sync-5).
+  Wrapper of `:brod.produce_sync/5`.
   """
   @spec produce_sync(client, topic, input :: {key, value} | value, partition | partitioner) ::
           :ok | {:error, term}
@@ -164,7 +164,7 @@ defmodule Brodex do
     do: :brod.produce_sync(client, topic, partition_spec, key, value)
 
   @doc """
-  Wrapper of [`:brod.get_metadata/3`](https://hexdocs.pm/brod/brod.html#get_metadata-3)
+  Wrapper of `:brod.get_metadata/3`.
   """
   @spec get_metadata([endpoint], :all | [topic], :brod.conn_config()) ::
           {:ok, :kpro.struct()} | {:error, term}
@@ -172,13 +172,13 @@ defmodule Brodex do
     do: :brod.get_metadata(endpoints, topic, connect_config)
 
   @doc """
-  Wrapper of [`:brod.get_partitions_count/2`](https://hexdocs.pm/brod/brod.html#get_partitions_count-2)
+  Wrapper of `:brod.get_partitions_count/2`.
   """
   @spec get_partitions_count(client, topic) :: {:ok, pos_integer} | {:error, term}
   def get_partitions_count(client, topic), do: :brod.get_partitions_count(client, topic)
 
   @doc """
-  Wrapper of [`:brod.list_all_groups/2`](https://hexdocs.pm/brod/brod.html#list_all_groups-2)
+  Wrapper of `:brod.list_all_groups/2`.
   """
   @spec list_all_consumer_groups([endpoint], :brod.conn_config()) :: [
           {endpoint, [:brod.cg()] | {:error, term}}
@@ -187,7 +187,7 @@ defmodule Brodex do
     do: :brod.list_all_groups(endpoints, connect_config)
 
   @doc """
-  Wrapper of [`:brod.list_groups/2`](https://hexdocs.pm/brod/brod.html#list_groups-2)
+  Wrapper of `:brod.list_groups/2`.
   """
   @spec list_consumer_groups(endpoint, :brod.conn_config()) ::
           {:ok, [:brod.cg()]} | {:error, term}
@@ -200,7 +200,7 @@ defmodule Brodex do
           | {:min_bytes, non_neg_integer}
           | {:max_bytes, non_neg_integer}
   @doc """
-  Wrapper of [`:brod.fetch/5`](https://hexdocs.pm/brod/brod.html#fetch-5)
+  Wrapper of `:brod.fetch/5`.
   """
   @spec fetch(
           connection | client_id | bootstrap,
