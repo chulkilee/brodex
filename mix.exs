@@ -28,8 +28,8 @@ defmodule Brodex.MixProject do
 
   defp deps do
     [
-      {:brod, "~> 3.8"},
-      {:ex_doc, "~> 0.21.0", only: :dev, runtime: false}
+      {:brod, "~> 4.0"},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
     ]
   end
 end
